@@ -7,11 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.17" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppointmentSystem.Repository.Interface\AppointmentSystem.Repository.Interface.csproj" />
+    <ProjectReference Include="..\AppointmentSystem.Repository\AppointmentSystem.Repository.csproj" />
+    <ProjectReference Include="..\AppointmentSystem.Utils\AppointmentSystem.Utils.csproj" />
   </ItemGroup>
 
 </Project>
