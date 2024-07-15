@@ -1,4 +1,5 @@
 ﻿
+using AppointmentSystem.Repository.Interface.IRepository;
 using AppointmentSystem.Utils.Exceptions;
 using AppointmentSystem.Utils.Messages;
 using AppointmentSystem.Utils.Responses;
