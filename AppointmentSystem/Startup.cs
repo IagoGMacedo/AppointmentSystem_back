@@ -1,4 +1,5 @@
-﻿using AppointmentSystem.Api.Middleware;
+﻿using AppointmentSystem.Api.Configuration;
+using AppointmentSystem.Api.Middleware;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -16,6 +17,10 @@ namespace AppointmentSystem.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDependencyInjectionConfiguration(Configuration);
+
+            services.AddDataBaseConfiguration(Configuration);
 
             services.AddSwaggerGen(c =>
             {
