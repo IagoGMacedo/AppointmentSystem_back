@@ -61,11 +61,56 @@ namespace AppointmentSystem.Utils.Messages {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O Agendamento de id &quot;{0}&quot; não existe na base..
+        /// </summary>
+        public static string AgendamentoNaoEncontrado {
+            get {
+                return ResourceManager.GetString("AgendamentoNaoEncontrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O usuário não pode ser deletado pois possui agendamentos atrelados a ele..
         /// </summary>
         public static string ApagarUsuarioComAgendamento {
             get {
                 return ResourceManager.GetString("ApagarUsuarioComAgendamento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não há mais vagas disponíveis para esse dia..
+        /// </summary>
+        public static string DiaIndisponivel {
+            get {
+                return ResourceManager.GetString("DiaIndisponivel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Os horários de agendamento disponível são das 07 às 17. .
+        /// </summary>
+        public static string HorarioExpediente {
+            get {
+                return ResourceManager.GetString("HorarioExpediente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não há vaga para esse horário, escolha outro horário..
+        /// </summary>
+        public static string HorarioIndisponivel {
+            get {
+                return ResourceManager.GetString("HorarioIndisponivel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O horário do agendamento não deve especificar minuto ou segundo..
+        /// </summary>
+        public static string HorarioInvalido {
+            get {
+                return ResourceManager.GetString("HorarioInvalido", resourceCulture);
             }
         }
         
@@ -79,11 +124,20 @@ namespace AppointmentSystem.Utils.Messages {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O usuário de id &quot;{0}&quot; já possui um agendamento marcado!.
+        /// </summary>
+        public static string UsuarioJaPossuiAgendamento {
+            get {
+                return ResourceManager.GetString("UsuarioJaPossuiAgendamento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O usuário &apos;{0}&apos; não existe na base..
         /// </summary>
-        public static string UsuarioNaoExisteNaBase {
+        public static string UsuarioNaoEncontrado {
             get {
-                return ResourceManager.GetString("UsuarioNaoExisteNaBase", resourceCulture);
+                return ResourceManager.GetString("UsuarioNaoEncontrado", resourceCulture);
             }
         }
     }

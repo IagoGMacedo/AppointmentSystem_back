@@ -1,0 +1,172 @@
+﻿using AppointmentSystem.Business.Interface.IBusiness;
+using AppointmentSystem.Entity.DTO;
+using AppointmentSystem.Entity.Entity;
+using AppointmentSystem.Entity.Enum;
+using AppointmentSystem.Entity.Filter;
+using AppointmentSystem.Entity.Model;
+using AppointmentSystem.Repository.Interface.IRepository;
+using AppointmentSystem.Utils.Exceptions;
+using AppointmentSystem.Utils.Messages;
+using log4net;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AppointmentSystem.Business.Business
+{
+    public class AppointmentBusiness : IAppointmentBusiness
+    {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(AppointmentBusiness));
+        private readonly IAppointmentRepository _appointmentRepository;
+        private readonly IUserRepository _userRepository;
+        public AppointmentBusiness(IAppointmentRepository appointmentRepository, IUserRepository userRepository)
+        {
+            _appointmentRepository = appointmentRepository;
+            _userRepository = userRepository;
+        }
+
+        public async Task<List<AppointmentDTO>> CreateAppointment(AppointmentRegistrationModel newAppointment)
+        {
+            var user = await _userRepository.GetUser(new UserFilter { Id = newAppointment.UserId });
+
+            if (user == null)
+            {
+                _log.InfoFormat("O usuário de id '{0}' não existe na base.", newAppointment.UserId);
+                throw new BusinessException(string.Format(BusinessMessages.UsuarioNaoEncontrado, newAppointment.UserId));
+            }
+
+
+            // verifica se o paciente já não possui um agendamento marcado
+            if (user.Appointments.Any(appointment => appointment.Status == StatusEnum.Agendado))
+            {
+                _log.InfoFormat("O usuário de id '{0}' não pode criar um novo agendamento pois já possui um marcado", newAppointment.UserId);
+                throw new BusinessException(string.Format(BusinessMessages.UsuarioJaPossuiAgendamento, newAppointment.UserId));
+            }
+
+            await CheckAppointmentAvailability(newAppointment.AppointmentDate.Value, newAppointment.AppointmentTime.Value);
+
+            var appointment = BuildAppointment(newAppointment, user);
+            await _appointmentRepository.Create(appointment);
+            _log.InfoFormat("O novo Agendamento {0} {1} foi inserido.", appointment.AppointmentDate, appointment.AppointmentTime);
+            return await _appointmentRepository.GetAllAppointments();
+        }
+
+        public async Task<List<AppointmentDTO>> GetAppointments(AppointmentFilterModel filter)
+        {
+            if (filter == null)
+            {
+                return await _appointmentRepository.GetAllAppointments();
+            }
+            else
+            {
+                return await _appointmentRepository.GetAppointments(filter);
+            }
+        }
+
+        public async Task<List<AppointmentDTO>> UpdateAppointmentByPatient(int idAppointment, AppointmentUpdatePatientModel updateAppointment)
+        {
+            var appointment = await _appointmentRepository.GetById(idAppointment);
+            if (appointment != null)
+            {
+                await CheckAppointmentAvailability(updateAppointment.AppointmentDate, updateAppointment.AppointmentTime);
+
+                appointment.AppointmentDate = updateAppointment.AppointmentDate;
+                appointment.AppointmentTime = updateAppointment.AppointmentTime;
+                appointment.DateOfCreation = DateTime.Now;
+                await _appointmentRepository.Update(appointment);
+                _log.InfoFormat("O agendamento '{0}' foi atualizado", idAppointment);
+            }
+            else
+            {
+                _log.InfoFormat("O agendamento '{0}' não existe na base.", idAppointment);
+                throw new BusinessException(string.Format(BusinessMessages.AgendamentoNaoEncontrado, idAppointment));
+            }
+            return await _appointmentRepository.GetAllAppointments();
+        }
+
+        public async Task<List<AppointmentDTO>> UpdateAppointmentByProfessional(int idAppointment, AppointmentUpdateProfessionalModel updateAppointment)
+        {
+            var appointment = await _appointmentRepository.GetById(idAppointment);
+            if (appointment != null)
+            {
+                await CheckAppointmentAvailability(updateAppointment.AppointmentDate, updateAppointment.AppointmentTime);
+
+                appointment.AppointmentDate = updateAppointment.AppointmentDate;
+                appointment.AppointmentTime = updateAppointment.AppointmentTime;
+                appointment.Status = updateAppointment.Status;
+                appointment.UserId = updateAppointment.UserId;
+                appointment.DateOfCreation = DateTime.Now;
+                await _appointmentRepository.Update(appointment);
+                _log.InfoFormat("O agendamento '{0}' foi atualizado", idAppointment);
+            }
+            else
+            {
+                _log.InfoFormat("O agendamento '{0}' não existe na base.", idAppointment);
+                throw new BusinessException(string.Format(BusinessMessages.AgendamentoNaoEncontrado, idAppointment));
+            }
+            return await _appointmentRepository.GetAllAppointments();
+        }
+
+        public async Task<List<AppointmentDTO>> DeleteAppointment(int idAppointment)
+        {
+            var appointment = await _appointmentRepository.GetById(idAppointment);
+            if (appointment != null)
+            {
+                await _appointmentRepository.Delete(appointment);
+                _log.InfoFormat("O agendamento {0} {1} foi removido.", appointment.AppointmentDate, appointment.AppointmentTime);
+            }
+            else
+            {
+                _log.InfoFormat("O agendamento '{0}' não existe na base.", idAppointment);
+                throw new BusinessException(string.Format(BusinessMessages.AgendamentoNaoEncontrado, idAppointment));
+            }
+            return await _appointmentRepository.GetAllAppointments();
+        }
+
+        private async Task CheckAppointmentAvailability(DateOnly appointmentDate, TimeSpan appointmentTime)
+        {
+            if (appointmentTime.Minutes != 0 || appointmentTime.Seconds != 0)
+            {
+                _log.InfoFormat("O horário do agendamento não deve especificar minuto ou segundo");
+                throw new BusinessException(BusinessMessages.HorarioInvalido);
+            }
+
+            if (appointmentTime.Hours < 7 || appointmentTime.Hours > 17)
+            {
+                _log.InfoFormat("Os agendamentos ocorrem de 07 às 17");
+                throw new BusinessException(BusinessMessages.HorarioExpediente);
+            }
+
+            var availability = await _appointmentRepository.CheckAvailability(appointmentDate, appointmentTime);
+
+            if (!availability.IsDateAvailable)
+            {
+                _log.InfoFormat("Não existem mais horários disponíveis para esse dia");
+                throw new BusinessException(BusinessMessages.DiaIndisponivel);
+            }
+
+            if (!availability.IsTimeAvailable)
+            {
+                _log.InfoFormat("Esse horário não está disponível");
+                throw new BusinessException(BusinessMessages.HorarioIndisponivel);
+            }
+        }
+
+        private Appointment BuildAppointment(AppointmentRegistrationModel newAppointment, User user)
+        {
+
+            var appointment = new Appointment
+            {
+                UserId = newAppointment.UserId,
+                DateOfCreation = DateTime.Now,
+                AppointmentDate = newAppointment.AppointmentDate.Value,
+                AppointmentTime = newAppointment.AppointmentTime.Value,
+                Status = Entity.Enum.StatusEnum.Agendado,
+            };
+
+            return appointment;
+        }
+    }
+}
