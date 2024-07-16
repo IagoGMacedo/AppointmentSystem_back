@@ -1,14 +1,16 @@
-﻿using AppointmentSystem.Entity.Enum;
+﻿using AppointmentSystem.Entity.Entity;
+using AppointmentSystem.Entity.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppointmentSystem.Entity.Entity
+namespace AppointmentSystem.Entity.DTO
 {
-    public class Appointment : IdEntity<int>
+    public class AppointmentDTO
     {
+        public int Id { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
         public DateOnly AppointmentDate { get; set; }

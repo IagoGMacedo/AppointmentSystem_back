@@ -1,5 +1,6 @@
 ﻿using AppointmentSystem.Api.Configuration;
 using AppointmentSystem.Api.Middleware;
+using AppointmentSystem.Utils.Converters;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -16,7 +17,12 @@ namespace AppointmentSystem.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(
+                options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new DateOnlyJSONConverter());
+                });
 
             services.AddDependencyInjectionConfiguration(Configuration);
 

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AppointmentSystem.Entity\AppointmentSystem.Entity.csproj" />
+  </ItemGroup>
+
 </Project>

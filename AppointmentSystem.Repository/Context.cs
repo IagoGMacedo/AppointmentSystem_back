@@ -1,4 +1,5 @@
 ﻿using AppointmentSystem.Entity.Entity;
+using AppointmentSystem.Utils.Converters;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace AppointmentSystem.Repository
         {
             base.ConfigureConventions(builder);
 
+            builder.Properties<DateOnly>()
+           .HaveConversion<DateOnlyConverter>();
         }
 
     }

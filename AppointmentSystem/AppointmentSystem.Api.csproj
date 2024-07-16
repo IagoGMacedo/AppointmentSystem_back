@@ -13,10 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\AppointmentSystem.Business.Interface\AppointmentSystem.Business.Interface.csproj" />
+    <ProjectReference Include="..\AppointmentSystem.Business\AppointmentSystem.Business.csproj" />
     <ProjectReference Include="..\AppointmentSystem.Repository.Interface\AppointmentSystem.Repository.Interface.csproj" />
     <ProjectReference Include="..\AppointmentSystem.Repository\AppointmentSystem.Repository.csproj" />
     <ProjectReference Include="..\AppointmentSystem.Utils\AppointmentSystem.Utils.csproj" />
