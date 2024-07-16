@@ -73,7 +73,7 @@ namespace AppointmentSystem.Business.Business
             else
             {
                 _log.InfoFormat("O usuário '{0}' não existe na base.", idUser);
-                throw new BusinessException(string.Format(BusinessMessages.UsuarioNaoExisteNaBase, idUser));
+                throw new BusinessException(string.Format(BusinessMessages.UsuarioNaoEncontrado, idUser));
             }
             return await _userRepository.GetAllUsers();
         }
@@ -95,7 +95,7 @@ namespace AppointmentSystem.Business.Business
             else
             {
                 _log.InfoFormat("O usuário '{0}' não existe na base.", idUser);
-                throw new BusinessException(string.Format(BusinessMessages.UsuarioNaoExisteNaBase, idUser));
+                throw new BusinessException(string.Format(BusinessMessages.UsuarioNaoEncontrado, idUser));
             }
             return await _userRepository.GetAllUsers();
         }

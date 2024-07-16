@@ -117,13 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AgendamentoNaoEncontrado" xml:space="preserve">
+    <value>O Agendamento de id "{0}" não existe na base.</value>
+  </data>
   <data name="ApagarUsuarioComAgendamento" xml:space="preserve">
     <value>O usuário não pode ser deletado pois possui agendamentos atrelados a ele.</value>
+  </data>
+  <data name="DiaIndisponivel" xml:space="preserve">
+    <value>Não há mais vagas disponíveis para esse dia.</value>
+  </data>
+  <data name="HorarioExpediente" xml:space="preserve">
+    <value>Os horários de agendamento disponível são das 07 às 17. </value>
+  </data>
+  <data name="HorarioIndisponivel" xml:space="preserve">
+    <value>Não há vaga para esse horário, escolha outro horário.</value>
+  </data>
+  <data name="HorarioInvalido" xml:space="preserve">
+    <value>O horário do agendamento não deve especificar minuto ou segundo.</value>
   </data>
   <data name="RegistroExistente" xml:space="preserve">
     <value>O registro "{0}" já existe na base.</value>
   </data>
-  <data name="UsuarioNaoExisteNaBase" xml:space="preserve">
+  <data name="UsuarioJaPossuiAgendamento" xml:space="preserve">
+    <value>O usuário de id "{0}" já possui um agendamento marcado!</value>
+  </data>
+  <data name="UsuarioNaoEncontrado" xml:space="preserve">
     <value>O usuário '{0}' não existe na base.</value>
   </data>
 </root>

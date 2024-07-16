@@ -21,11 +21,13 @@ namespace AppointmentSystem.Api.Configuration
         private static void InjectRepository(IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
         }
 
         private static void InjectBusiness(IServiceCollection services)
         {
             services.AddScoped<IUserBusiness, UserBusiness>();
+            services.AddScoped<IAppointmentBusiness, AppointmentBusiness>();
         }
 
         private static void InjectMiddleware(IServiceCollection services)
