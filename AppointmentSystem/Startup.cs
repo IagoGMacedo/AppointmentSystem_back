@@ -28,6 +28,8 @@ namespace AppointmentSystem.Api
 
             services.AddDataBaseConfiguration(Configuration);
 
+            services.AddFluentConfiguration();
+
             services.AddSwaggerGen(c =>
             {
                 c.MapType(typeof(TimeSpan), () => new() { Type = "string", Example = new OpenApiString("00:00:00") });
