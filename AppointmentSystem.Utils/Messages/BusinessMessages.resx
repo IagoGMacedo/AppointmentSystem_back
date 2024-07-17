@@ -123,6 +123,12 @@
   <data name="ApagarUsuarioComAgendamento" xml:space="preserve">
     <value>O usuário não pode ser deletado pois possui agendamentos atrelados a ele.</value>
   </data>
+  <data name="CampoInvalido" xml:space="preserve">
+    <value>O campo "{0}" está inválido.</value>
+  </data>
+  <data name="CampoObrigatorio" xml:space="preserve">
+    <value>O campo "{0}" é obrigatório.</value>
+  </data>
   <data name="DiaIndisponivel" xml:space="preserve">
     <value>Não há mais vagas disponíveis para esse dia.</value>
   </data>

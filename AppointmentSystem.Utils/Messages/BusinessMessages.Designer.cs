@@ -79,6 +79,24 @@ namespace AppointmentSystem.Utils.Messages {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O campo &quot;{0}&quot; está inválido..
+        /// </summary>
+        public static string CampoInvalido {
+            get {
+                return ResourceManager.GetString("CampoInvalido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O campo &quot;{0}&quot; é obrigatório..
+        /// </summary>
+        public static string CampoObrigatorio {
+            get {
+                return ResourceManager.GetString("CampoObrigatorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Não há mais vagas disponíveis para esse dia..
         /// </summary>
         public static string DiaIndisponivel {
