@@ -12,6 +12,7 @@ namespace AppointmentSystem.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserBusiness _userBusiness;
+        private string _tokenJWT;
 
         public UserController(IUserBusiness userBusiness)
         {
@@ -19,12 +20,14 @@ namespace AppointmentSystem.Api.Controllers
         }
 
         [HttpGet("GetAllUsers")]
+        [Authorize]
         public async Task<List<UserDTO>> GetAllUsers()
         {
             return await _userBusiness.GetUsers(null);
         }
 
         [HttpGet("FilterUsers")]
+        [Authorize]
         public async Task<List<UserDTO>> FilterUsers([FromQuery] UserFilterModel filter)
         {
             return await _userBusiness.GetUsers(filter);
@@ -39,16 +42,20 @@ namespace AppointmentSystem.Api.Controllers
 
         [HttpDelete("DeleteUser")]
         [RequiredTransaction]
+        [Authorize]
         public async Task<List<UserDTO>> Delete(int id)
         {
-            return await _userBusiness.DeleteUser(id);
+            _tokenJWT = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            return await _userBusiness.DeleteUser(_tokenJWT, id);
         }
 
         [HttpPut("UpdateUser")]
         [RequiredTransaction]
+        [Authorize]
         public async Task<List<UserDTO>> Put(int id, UserUpdateModel newUser)
         {
-            return await _userBusiness.UpdateUser(id, newUser);
+            _tokenJWT = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            return await _userBusiness.UpdateUser(_tokenJWT, id, newUser);
         }
     }
 }

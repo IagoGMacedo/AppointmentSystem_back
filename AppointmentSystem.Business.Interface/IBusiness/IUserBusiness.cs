@@ -11,8 +11,8 @@ namespace AppointmentSystem.Business.Interface.IBusiness
     public interface IUserBusiness
     {
         Task<List<UserDTO>> CreateUser(UserRegistrationModel newUser);
-        Task<List<UserDTO>> UpdateUser(int idUser, UserUpdateModel updateUser);
-        Task<List<UserDTO>> DeleteUser(int idUser);
+        Task<List<UserDTO>> UpdateUser(string tokenJWT, int idUser, UserUpdateModel updateUser);
+        Task<List<UserDTO>> DeleteUser(string tokenJWT, int idUser);
         Task<List<UserDTO>> GetUsers(UserFilterModel filter);
     }
 }

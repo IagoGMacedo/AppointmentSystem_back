@@ -30,6 +30,14 @@ namespace AppointmentSystem.Repository.Map
                 .HasMaxLength(50)
                 .IsRequired(true);
 
+            builder.Property(e => e.PasswordHash)
+                 .HasColumnName("psw_hash")
+                 .IsRequired();
+
+            builder.Property(e => e.PasswordSalt)
+                  .HasColumnName("psw_salt")
+                  .IsRequired();
+
             builder.Property(e => e.Profile)
                 .HasColumnName("id_tpperfil")
                 .IsRequired(true);

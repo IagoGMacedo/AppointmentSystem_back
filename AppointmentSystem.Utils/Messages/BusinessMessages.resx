@@ -120,6 +120,9 @@
   <data name="AgendamentoNaoEncontrado" xml:space="preserve">
     <value>O Agendamento de id "{0}" não existe na base.</value>
   </data>
+  <data name="AgendamentoNaoPertenceAoUsuario" xml:space="preserve">
+    <value>Um usuário não pode interagir com o agendamendo de outro usuário.</value>
+  </data>
   <data name="ApagarUsuarioComAgendamento" xml:space="preserve">
     <value>O usuário não pode ser deletado pois possui agendamentos atrelados a ele.</value>
   </data>
@@ -128,6 +131,9 @@
   </data>
   <data name="CampoObrigatorio" xml:space="preserve">
     <value>O campo "{0}" é obrigatório.</value>
+  </data>
+  <data name="ContaNaoPertenceAoUsuario" xml:space="preserve">
+    <value>Um usuário não pode interagir com a conta de outro usuário.</value>
   </data>
   <data name="DiaIndisponivel" xml:space="preserve">
     <value>Não há mais vagas disponíveis para esse dia.</value>
@@ -149,5 +155,8 @@
   </data>
   <data name="UsuarioNaoEncontrado" xml:space="preserve">
     <value>O usuário '{0}' não existe na base.</value>
+  </data>
+  <data name="UsuarioSenhaInvalida" xml:space="preserve">
+    <value>Usuário ou senha inválida.</value>
   </data>
 </root>
