@@ -2,6 +2,8 @@
 using AppointmentSystem.Entity.DTO;
 using AppointmentSystem.Entity.Model;
 using AppointmentSystem.Utils.Attributes;
+using AppointmentSystem.Utils.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppointmentSystem.Api.Controllers
@@ -11,6 +13,7 @@ namespace AppointmentSystem.Api.Controllers
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentBusiness _appointmentBusiness;
+        private string _tokenJWT;
         public AppointmentController(IAppointmentBusiness appointmentBusiness)
         {
             _appointmentBusiness = appointmentBusiness;
@@ -18,12 +21,15 @@ namespace AppointmentSystem.Api.Controllers
 
         [HttpPost("CreateAppointment")]
         [RequiredTransaction]
+        [Authorize]
         public async Task<List<AppointmentDTO>> Post(AppointmentRegistrationModel newAppointment)
         {
-            return await _appointmentBusiness.CreateAppointment(newAppointment);
+            _tokenJWT = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            return await _appointmentBusiness.CreateAppointment(_tokenJWT, newAppointment);
         }
 
         [HttpGet("GetAllAppointments")]
+        [Authorize(Roles = PermissionConstants.PROFESSIONAL)]
         public async Task<List<AppointmentDTO>> GetAllAppointments()
         {
 
@@ -31,6 +37,7 @@ namespace AppointmentSystem.Api.Controllers
         }
 
         [HttpPost("FilterAppointments")]
+        [Authorize]
         public async Task<List<AppointmentDTO>> FilterAppointments(AppointmentFilterModel filter)
         {
             return await _appointmentBusiness.GetAppointments(filter);
@@ -38,13 +45,16 @@ namespace AppointmentSystem.Api.Controllers
 
         [HttpPut("UpdateAppointmentByPatient")]
         [RequiredTransaction]
+        [Authorize(Roles = PermissionConstants.PATIENT)]
         public async Task<List<AppointmentDTO>> PutByPatient(int idAppointment, AppointmentUpdatePatientModel newAppointment)
         {
-            return await _appointmentBusiness.UpdateAppointmentByPatient(idAppointment, newAppointment);
+            _tokenJWT = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            return await _appointmentBusiness.UpdateAppointmentByPatient(_tokenJWT, idAppointment, newAppointment);
         }
 
         [HttpPut("UpdateAppointmentByProfessional")]
         [RequiredTransaction]
+        [Authorize(Roles = PermissionConstants.PROFESSIONAL)]
         public async Task<List<AppointmentDTO>> PutByProfessional(int id, AppointmentUpdateProfessionalModel newAppointment)
         {
             return await _appointmentBusiness.UpdateAppointmentByProfessional(id, newAppointment);
@@ -53,9 +63,11 @@ namespace AppointmentSystem.Api.Controllers
 
         [HttpDelete("DeleteAppointment")]
         [RequiredTransaction]
+        [Authorize]
         public async Task<List<AppointmentDTO>> Delete(int id)
         {
-            return await _appointmentBusiness.DeleteAppointment(id);
+            _tokenJWT = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            return await _appointmentBusiness.DeleteAppointment(_tokenJWT, id);
         }
 
         

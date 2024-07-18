@@ -70,6 +70,15 @@ namespace AppointmentSystem.Utils.Messages {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Um usuário não pode interagir com o agendamendo de outro usuário..
+        /// </summary>
+        public static string AgendamentoNaoPertenceAoUsuario {
+            get {
+                return ResourceManager.GetString("AgendamentoNaoPertenceAoUsuario", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O usuário não pode ser deletado pois possui agendamentos atrelados a ele..
         /// </summary>
         public static string ApagarUsuarioComAgendamento {
@@ -93,6 +102,15 @@ namespace AppointmentSystem.Utils.Messages {
         public static string CampoObrigatorio {
             get {
                 return ResourceManager.GetString("CampoObrigatorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Um usuário não pode interagir com a conta de outro usuário..
+        /// </summary>
+        public static string ContaNaoPertenceAoUsuario {
+            get {
+                return ResourceManager.GetString("ContaNaoPertenceAoUsuario", resourceCulture);
             }
         }
         
@@ -156,6 +174,15 @@ namespace AppointmentSystem.Utils.Messages {
         public static string UsuarioNaoEncontrado {
             get {
                 return ResourceManager.GetString("UsuarioNaoEncontrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário ou senha inválida..
+        /// </summary>
+        public static string UsuarioSenhaInvalida {
+            get {
+                return ResourceManager.GetString("UsuarioSenhaInvalida", resourceCulture);
             }
         }
     }

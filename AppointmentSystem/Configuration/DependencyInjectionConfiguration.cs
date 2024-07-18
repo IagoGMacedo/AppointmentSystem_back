@@ -4,6 +4,8 @@ using AppointmentSystem.Business.Interface.IBusiness;
 using AppointmentSystem.Repository;
 using AppointmentSystem.Repository.Interface.IRepository;
 using AppointmentSystem.Repository.Repository;
+using AppointmentSystem.Utils.Configurations;
+using AppointmentSystem.Utils.UserContext;
 
 namespace AppointmentSystem.Api.Configuration
 {
@@ -16,6 +18,8 @@ namespace AppointmentSystem.Api.Configuration
             InjectMiddleware(services);
 
             services.AddScoped<ITransactionManager, TransactionManager>();
+            services.AddScoped<IUserContext, UserContext>();
+            services.AddOptions<AuthenticationConfig>().Bind(configuration.GetSection("Authorization"));
         }
 
         private static void InjectRepository(IServiceCollection services)
@@ -26,13 +30,15 @@ namespace AppointmentSystem.Api.Configuration
 
         private static void InjectBusiness(IServiceCollection services)
         {
-            services.AddScoped<IUserBusiness, UserBusiness>();
             services.AddScoped<IAppointmentBusiness, AppointmentBusiness>();
+            services.AddScoped<IUserBusiness, UserBusiness>();
+            services.AddScoped<IAuthenticationBusiness, AuthenticationBusiness>();
         }
 
         private static void InjectMiddleware(IServiceCollection services)
         {
             services.AddTransient<ApiMiddleware>();
+            services.AddTransient<UserContextMiddleware>();
         }
     }
 }

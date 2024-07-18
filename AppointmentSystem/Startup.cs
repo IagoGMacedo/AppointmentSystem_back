@@ -30,6 +30,8 @@ namespace AppointmentSystem.Api
 
             services.AddFluentConfiguration();
 
+            services.AddAuthorizationConfiguration(Configuration);
+
             services.AddSwaggerGen(c =>
             {
                 c.MapType(typeof(TimeSpan), () => new() { Type = "string", Example = new OpenApiString("00:00:00") });
@@ -69,10 +71,14 @@ namespace AppointmentSystem.Api
                 c.RoutePrefix = string.Empty;
             });
 
+            app.UseCors("CORS_POLICY");
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseMiddleware<ApiMiddleware>();
+            app.UseMiddleware<UserContextMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

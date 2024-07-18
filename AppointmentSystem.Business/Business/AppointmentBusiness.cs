@@ -10,7 +10,9 @@ using AppointmentSystem.Utils.Messages;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,7 +29,7 @@ namespace AppointmentSystem.Business.Business
             _userRepository = userRepository;
         }
 
-        public async Task<List<AppointmentDTO>> CreateAppointment(AppointmentRegistrationModel newAppointment)
+        public async Task<List<AppointmentDTO>> CreateAppointment(string tokenJWT, AppointmentRegistrationModel newAppointment)
         {
             var user = await _userRepository.GetUser(new UserFilter { Id = newAppointment.UserId });
 
@@ -37,6 +39,8 @@ namespace AppointmentSystem.Business.Business
                 throw new BusinessException(string.Format(BusinessMessages.UsuarioNaoEncontrado, newAppointment.UserId));
             }
 
+            // verifica se o paciente está criando um agendamento para si mesmo
+            await CheckUserOwnsAppointment(tokenJWT, BuildAppointment(newAppointment, user));
 
             // verifica se o paciente já não possui um agendamento marcado
             if (user.Appointments.Any(appointment => appointment.Status == StatusEnum.Agendado))
@@ -65,12 +69,14 @@ namespace AppointmentSystem.Business.Business
             }
         }
 
-        public async Task<List<AppointmentDTO>> UpdateAppointmentByPatient(int idAppointment, AppointmentUpdatePatientModel updateAppointment)
+        public async Task<List<AppointmentDTO>> UpdateAppointmentByPatient(string tokenJWT, int idAppointment, AppointmentUpdatePatientModel updateAppointment)
         {
             var appointment = await _appointmentRepository.GetById(idAppointment);
             if (appointment != null)
             {
                 await CheckAppointmentAvailability(updateAppointment.AppointmentDate, updateAppointment.AppointmentTime);
+                if (appointment.AppointmentDate != updateAppointment.AppointmentDate || appointment.AppointmentTime != updateAppointment.AppointmentTime)
+                    await CheckAppointmentAvailability(updateAppointment.AppointmentDate, updateAppointment.AppointmentTime);
 
                 appointment.AppointmentDate = updateAppointment.AppointmentDate;
                 appointment.AppointmentTime = updateAppointment.AppointmentTime;
@@ -109,11 +115,12 @@ namespace AppointmentSystem.Business.Business
             return await _appointmentRepository.GetAllAppointments();
         }
 
-        public async Task<List<AppointmentDTO>> DeleteAppointment(int idAppointment)
+        public async Task<List<AppointmentDTO>> DeleteAppointment(string tokenJWT, int idAppointment)
         {
             var appointment = await _appointmentRepository.GetById(idAppointment);
             if (appointment != null)
             {
+                await CheckUserOwnsAppointment(tokenJWT, appointment);
                 await _appointmentRepository.Delete(appointment);
                 _log.InfoFormat("O agendamento {0} {1} foi removido.", appointment.AppointmentDate, appointment.AppointmentTime);
             }
@@ -123,6 +130,24 @@ namespace AppointmentSystem.Business.Business
                 throw new BusinessException(string.Format(BusinessMessages.AgendamentoNaoEncontrado, idAppointment));
             }
             return await _appointmentRepository.GetAllAppointments();
+        }
+
+        // verifica se, caso seja um paciente, ele está criando, alterando ou excluindo um agendamento que pertence a ele
+        private async Task CheckUserOwnsAppointment(string tokenJWT, Appointment appointment)
+        {
+            var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(tokenJWT);
+            var userRole = jwtToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role)?.Value;
+
+            if (userRole.ToUpper() == "PATIENT")
+            {
+                var userID = jwtToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Sid)?.Value;
+
+                if (userID != null && userID != appointment.UserId.ToString())
+                {
+                    _log.InfoFormat("O usuário de id '{0}' não pode interagir com o agendamento de outro usuário", userID);
+                    throw new BusinessException(BusinessMessages.AgendamentoNaoPertenceAoUsuario);
+                }
+            }
         }
 
         private async Task CheckAppointmentAvailability(DateOnly appointmentDate, TimeSpan appointmentTime)

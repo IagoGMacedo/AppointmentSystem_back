@@ -9,7 +9,9 @@ using AppointmentSystem.Utils.Messages;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,11 +56,13 @@ namespace AppointmentSystem.Business.Business
             }
         }
 
-        public async Task<List<UserDTO>> UpdateUser(int idUser, UserUpdateModel updateUser)
+        public async Task<List<UserDTO>> UpdateUser(string tokenJWT, int idUser, UserUpdateModel updateUser)
         {
             var user = await _userRepository.GetById(idUser);
             if (user != null)
             {
+                await CheckUserOwnsAccount(tokenJWT, user);
+
                 var userLogin = await _userRepository.GetUser(new UserFilter { Login = updateUser.Login });
                 if (userLogin != null && userLogin.Id != user.Id)
                 {
@@ -78,12 +82,12 @@ namespace AppointmentSystem.Business.Business
             return await _userRepository.GetAllUsers();
         }
 
-        public async Task<List<UserDTO>> DeleteUser(int idUser)
+        public async Task<List<UserDTO>> DeleteUser(string tokenJWT, int idUser)
         {
             var user = await _userRepository.GetUser(new UserFilter { Id = idUser });
             if (user != null)
             {
-
+                await CheckUserOwnsAccount(tokenJWT, user);
                 if (user.Appointments != null && user.Appointments.Count > 0)
                 {
                     _log.InfoFormat("O usuário de id '{0}' não pode ser apagado pois possui agendamentos", user.Id);
@@ -98,6 +102,23 @@ namespace AppointmentSystem.Business.Business
                 throw new BusinessException(string.Format(BusinessMessages.UsuarioNaoEncontrado, idUser));
             }
             return await _userRepository.GetAllUsers();
+        }
+
+        private async Task CheckUserOwnsAccount(string tokenJWT, User user)
+        {
+            var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(tokenJWT);
+            var userRole = jwtToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role)?.Value;
+
+            if (userRole.ToUpper() == "PATIENT")
+            {
+                var userID = jwtToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Sid)?.Value;
+
+                if (userID != null && userID != user.Id.ToString())
+                {
+                    _log.InfoFormat("O usuário de id '{0}' não pode interagir com a conta de id '{1}' ", userID, user.Id);
+                    throw new BusinessException(BusinessMessages.ContaNaoPertenceAoUsuario);
+                }
+            }
         }
 
         private User BuildUser(UserRegistrationModel newUser)
