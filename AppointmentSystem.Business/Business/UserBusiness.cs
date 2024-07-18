@@ -9,6 +9,8 @@ using AppointmentSystem.Utils.Messages;
 using log4net;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace AppointmentSystem.Business.Business
 {
@@ -126,6 +128,10 @@ namespace AppointmentSystem.Business.Business
                 DateOfCreation = DateTime.Now
             };
 
+            using var hmac = new HMACSHA512();
+            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(newUser.Password));
+            user.PasswordSalt = hmac.Key;
+
             return user;
         }
 
@@ -134,8 +140,13 @@ namespace AppointmentSystem.Business.Business
             user.Name = updateUser.Name;
             user.Login = updateUser.Login;
             user.DateOfBirth = updateUser.DateOfBirth;
+            using var hmac = new HMACSHA512();
+
+            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(updateUser.Password));
+            user.PasswordSalt = hmac.Key;
 
             return user;
+
         }
     }
 }

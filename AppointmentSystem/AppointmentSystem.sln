@@ -3,21 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Api", "AppointmentSystem.Api.csproj", "{FC616DA6-DAF7-4430-85A8-FBD1B9642971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSystem.Api", "AppointmentSystem.Api.csproj", "{FC616DA6-DAF7-4430-85A8-FBD1B9642971}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Business", "..\AppointmentSystem.Business\AppointmentSystem.Business.csproj", "{93F47733-F0AF-4F95-8F19-F12EEC615394}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSystem.Business", "..\AppointmentSystem.Business\AppointmentSystem.Business.csproj", "{93F47733-F0AF-4F95-8F19-F12EEC615394}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Business.Interface", "..\AppointmentSystem.Business.Interface\AppointmentSystem.Business.Interface.csproj", "{10C20378-CB6A-4B8C-A580-5C55873B551E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSystem.Business.Interface", "..\AppointmentSystem.Business.Interface\AppointmentSystem.Business.Interface.csproj", "{10C20378-CB6A-4B8C-A580-5C55873B551E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Entity", "..\AppointmentSystem.Entity\AppointmentSystem.Entity.csproj", "{E47598CD-0CD0-4894-AEA0-79657ABC5475}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSystem.Entity", "..\AppointmentSystem.Entity\AppointmentSystem.Entity.csproj", "{E47598CD-0CD0-4894-AEA0-79657ABC5475}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Repository", "..\AppointmentSystem.Repository\AppointmentSystem.Repository.csproj", "{4B9E959E-D2D1-457C-89D0-3D89BA75D5FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSystem.Repository", "..\AppointmentSystem.Repository\AppointmentSystem.Repository.csproj", "{4B9E959E-D2D1-457C-89D0-3D89BA75D5FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Repository.Interface", "..\AppointmentSystem.Repository.Interface\AppointmentSystem.Repository.Interface.csproj", "{C3581C12-4992-4574-B267-774949737542}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSystem.Repository.Interface", "..\AppointmentSystem.Repository.Interface\AppointmentSystem.Repository.Interface.csproj", "{C3581C12-4992-4574-B267-774949737542}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Utils", "..\AppointmentSystem.Utils\AppointmentSystem.Utils.csproj", "{5745690B-099A-4202-AABD-D942707883F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSystem.Utils", "..\AppointmentSystem.Utils\AppointmentSystem.Utils.csproj", "{5745690B-099A-4202-AABD-D942707883F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.Validator", "..\AppointmentSystem.Validator\AppointmentSystem.Validator.csproj", "{50762083-4271-451A-AECA-C5C2EE0394E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSystem.Validator", "..\AppointmentSystem.Validator\AppointmentSystem.Validator.csproj", "{50762083-4271-451A-AECA-C5C2EE0394E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.UnitTests", "..\AppointmentSystem.UnitTests\AppointmentSystem.UnitTests.csproj", "{834A3BFA-969F-487B-96D9-FBB996231878}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{50762083-4271-451A-AECA-C5C2EE0394E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50762083-4271-451A-AECA-C5C2EE0394E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50762083-4271-451A-AECA-C5C2EE0394E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{834A3BFA-969F-487B-96D9-FBB996231878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{834A3BFA-969F-487B-96D9-FBB996231878}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{834A3BFA-969F-487B-96D9-FBB996231878}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{834A3BFA-969F-487B-96D9-FBB996231878}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
