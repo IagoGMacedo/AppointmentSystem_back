@@ -19,6 +19,13 @@ namespace AppointmentSystem.Api.Controllers
             _userBusiness = userBusiness;
         }
 
+        [HttpPost("CreateUser")]
+        [RequiredTransaction]
+        public async Task<List<UserDTO>> Post(UserRegistrationModel newUser)
+        {
+            return await _userBusiness.CreateUser(newUser);
+        }
+
         [HttpGet("GetAllUsers")]
         [Authorize]
         public async Task<List<UserDTO>> GetAllUsers()
@@ -33,12 +40,15 @@ namespace AppointmentSystem.Api.Controllers
             return await _userBusiness.GetUsers(filter);
         }
 
-        [HttpPost("CreateUser")]
+        [HttpPut("UpdateUser")]
         [RequiredTransaction]
-        public async Task<List<UserDTO>> Post(UserRegistrationModel newUser)
+        [Authorize]
+        public async Task<List<UserDTO>> Put(int id, UserUpdateModel newUser)
         {
-            return await _userBusiness.CreateUser(newUser);
+            _tokenJWT = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            return await _userBusiness.UpdateUser(_tokenJWT, id, newUser);
         }
+
 
         [HttpDelete("DeleteUser")]
         [RequiredTransaction]
@@ -48,14 +58,6 @@ namespace AppointmentSystem.Api.Controllers
             _tokenJWT = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             return await _userBusiness.DeleteUser(_tokenJWT, id);
         }
-
-        [HttpPut("UpdateUser")]
-        [RequiredTransaction]
-        [Authorize]
-        public async Task<List<UserDTO>> Put(int id, UserUpdateModel newUser)
-        {
-            _tokenJWT = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            return await _userBusiness.UpdateUser(_tokenJWT, id, newUser);
-        }
+        
     }
 }

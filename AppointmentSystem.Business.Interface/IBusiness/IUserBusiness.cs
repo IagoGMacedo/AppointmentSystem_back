@@ -1,10 +1,5 @@
 ﻿using AppointmentSystem.Entity.DTO;
 using AppointmentSystem.Entity.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppointmentSystem.Business.Interface.IBusiness
 {

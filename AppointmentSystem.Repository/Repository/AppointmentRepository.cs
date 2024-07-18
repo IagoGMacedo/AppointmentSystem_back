@@ -2,11 +2,6 @@
 using AppointmentSystem.Entity.Model;
 using AppointmentSystem.Repository.Interface.IRepository;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppointmentSystem.Repository.Repository
 {

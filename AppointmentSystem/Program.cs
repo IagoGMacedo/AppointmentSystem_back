@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore;
 using System.Reflection;
 using AppointmentSystem.Api;
-using Microsoft.AspNetCore;
 using log4net;
 using log4net.Config;
 

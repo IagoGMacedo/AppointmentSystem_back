@@ -7,14 +7,8 @@ using AppointmentSystem.Repository.Interface.IRepository;
 using AppointmentSystem.Utils.Exceptions;
 using AppointmentSystem.Utils.Messages;
 using log4net;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppointmentSystem.Business.Business
 {
