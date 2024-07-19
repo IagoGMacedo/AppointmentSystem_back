@@ -18,7 +18,7 @@ namespace AppointmentSystem.Repository.Map
                 .IsRequired();
 
             builder.Property(e => e.UserId)
-                .HasColumnName("id_paciente")
+                .HasColumnName("id_user")
                 .IsRequired();
 
             builder.Property(e => e.AppointmentDate)

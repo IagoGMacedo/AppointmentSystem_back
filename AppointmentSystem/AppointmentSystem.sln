@@ -19,7 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSystem.Utils", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSystem.Validator", "..\AppointmentSystem.Validator\AppointmentSystem.Validator.csproj", "{50762083-4271-451A-AECA-C5C2EE0394E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentSystem.UnitTests", "..\AppointmentSystem.UnitTests\AppointmentSystem.UnitTests.csproj", "{834A3BFA-969F-487B-96D9-FBB996231878}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentSystem.UnitTests", "..\AppointmentSystem.UnitTests\AppointmentSystem.UnitTests.csproj", "{834A3BFA-969F-487B-96D9-FBB996231878}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{CEB85AB2-07BC-49D6-A3E1-1BAF2B537CCA}"
+	ProjectSection(SolutionItems) = preProject
+		script.sql = script.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,12 +8,12 @@ namespace AppointmentSystem.Repository.Map
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("tb_paciente");
+            builder.ToTable("tb_user");
 
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id)
-                .HasColumnName("id_paciente")
+                .HasColumnName("id_user")
                 .IsRequired();
 
             builder.Property(e => e.Name)
