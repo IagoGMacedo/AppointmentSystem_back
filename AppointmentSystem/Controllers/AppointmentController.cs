@@ -63,9 +63,9 @@ namespace AppointmentSystem.Api.Controllers
         [HttpPut("UpdateAppointmentByProfessional")]
         [RequiredTransaction]
         [Authorize(Roles = PermissionConstants.PROFESSIONAL)]
-        public async Task<List<AppointmentDTO>> PutByProfessional(int id, AppointmentUpdateProfessionalModel newAppointment)
+        public async Task<List<AppointmentDTO>> PutByProfessional(int idAppointment, AppointmentUpdateProfessionalModel newAppointment)
         {
-            return await _appointmentBusiness.UpdateAppointmentByProfessional(id, newAppointment);
+            return await _appointmentBusiness.UpdateAppointmentByProfessional(idAppointment, newAppointment);
         }
 
 

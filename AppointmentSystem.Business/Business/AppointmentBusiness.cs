@@ -82,19 +82,19 @@ namespace AppointmentSystem.Business.Business
             var appointment = await _appointmentRepository.GetById(idAppointment);
             if (appointment != null)
             {
-                await CheckUserOwnsAppointment(tokenJWT, appointment);
-                if (appointment.AppointmentDate != updateAppointment.AppointmentDate || appointment.AppointmentTime != updateAppointment.AppointmentTime)
-                    await CheckAppointmentAvailability(updateAppointment.AppointmentDate, updateAppointment.AppointmentTime);
+                if(updateAppointment.Status != StatusEnum.Cancelado) { 
+                    await CheckUserOwnsAppointment(tokenJWT, appointment);
+                    if (appointment.AppointmentDate != updateAppointment.AppointmentDate || appointment.AppointmentTime != updateAppointment.AppointmentTime)
+                        await CheckAppointmentAvailability(updateAppointment.AppointmentDate, updateAppointment.AppointmentTime);
 
-                appointment.AppointmentDate = updateAppointment.AppointmentDate;
-                appointment.AppointmentTime = updateAppointment.AppointmentTime;
-                appointment.DateOfCreation = DateTime.Now;
-
-                //só é possivel alterar para cancelado
-                if (updateAppointment.Status == StatusEnum.Cancelado)
-                {
-                    appointment.Status = StatusEnum.Cancelado;
+                    appointment.AppointmentDate = updateAppointment.AppointmentDate;
+                    appointment.AppointmentTime = updateAppointment.AppointmentTime;
+                    appointment.DateOfCreation = DateTime.Now;
                 }
+                //só é possivel alterar para cancelado
+                else 
+                    appointment.Status = StatusEnum.Cancelado;
+                
                 await _appointmentRepository.Update(appointment);
                 _log.InfoFormat("O agendamento '{0}' foi atualizado", idAppointment);
             }
@@ -111,13 +111,19 @@ namespace AppointmentSystem.Business.Business
             var appointment = await _appointmentRepository.GetById(idAppointment);
             if (appointment != null)
             {
-                await CheckAppointmentAvailability(updateAppointment.AppointmentDate, updateAppointment.AppointmentTime);
-
-                appointment.AppointmentDate = updateAppointment.AppointmentDate;
-                appointment.AppointmentTime = updateAppointment.AppointmentTime;
-                appointment.Status = updateAppointment.Status;
-                appointment.UserId = updateAppointment.UserId;
-                appointment.DateOfCreation = DateTime.Now;
+                if(updateAppointment.Status != StatusEnum.Cancelado && updateAppointment.Status != StatusEnum.Concluido)
+                {
+                    if (appointment.AppointmentDate != updateAppointment.AppointmentDate || appointment.AppointmentTime != updateAppointment.AppointmentTime)
+                        await CheckAppointmentAvailability(updateAppointment.AppointmentDate, updateAppointment.AppointmentTime);
+                    
+                    appointment.AppointmentDate = updateAppointment.AppointmentDate;
+                    appointment.AppointmentTime = updateAppointment.AppointmentTime;
+                    appointment.UserId = updateAppointment.UserId;
+                    appointment.DateOfCreation = DateTime.Now;
+                }
+                else
+                    appointment.Status = updateAppointment.Status;
+                
                 await _appointmentRepository.Update(appointment);
                 _log.InfoFormat("O agendamento '{0}' foi atualizado", idAppointment);
             }

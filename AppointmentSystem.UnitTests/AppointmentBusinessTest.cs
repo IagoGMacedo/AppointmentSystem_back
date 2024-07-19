@@ -353,7 +353,7 @@ namespace AppointmentSystem.UnitTests
                 UserId = user.Id,
                 AppointmentDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
                 AppointmentTime = new TimeSpan(10, 0, 0),
-                Status = StatusEnum.Concluido
+                Status = StatusEnum.Agendado
             };
 
             async Task action() => await _appointmentBusiness.UpdateAppointmentByProfessional(appointment.Id, updateModel);
