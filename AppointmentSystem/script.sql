@@ -7,7 +7,7 @@ CREATE TABLE dbo.tb_user (
 	psw_hash VARBINARY(MAX) NULL,
 	psw_salt VARBINARY(MAX) NULL,
 	id_tpperfil INT NOT NULL
-    CONSTRAINT PK_TB_PACIENTE PRIMARY KEY (id_user)
+    CONSTRAINT PK_TB_USER PRIMARY KEY (id_user)
 );
 
 CREATE TABLE dbo.tb_agendamento (
