@@ -39,8 +39,8 @@ namespace AppointmentSystem.Api
                 {
                     Title = "Appointment System",
                     Version = "v1",
-                    Description = "APIs de estudo em dotnet core 6.",
-                    Contact = new() { Name = "Iago Macedo", Url = new Uri("http://google.com.br") },
+                    Description = "Desafio de seleção da Pitang.",
+                    Contact = new() { Name = "Iago Macedo", Url = new Uri("http://iago-macedo.netlify.app") },
                     License = new() { Name = "Private", Url = new Uri("http://google.com.br") },
                     TermsOfService = new Uri("http://google.com.br")
                 });

@@ -2,6 +2,7 @@
 using AppointmentSystem.Entity.DTO;
 using AppointmentSystem.Entity.Model;
 using AppointmentSystem.Utils.Attributes;
+using AppointmentSystem.Utils.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,6 +39,13 @@ namespace AppointmentSystem.Api.Controllers
         public async Task<List<UserDTO>> FilterUsers([FromQuery] UserFilterModel filter)
         {
             return await _userBusiness.GetUsers(filter);
+        }
+
+        [HttpGet("GetUsersNamesAndIds")]
+        [Authorize(Roles = PermissionConstants.PROFESSIONAL)]
+        public async Task<List<UserNameAndIdDTO>> GetUsersNamesAndIds()
+        {
+            return await _userBusiness.GetUsersNamesAndIds();
         }
 
         [HttpPut("UpdateUser")]

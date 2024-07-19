@@ -8,5 +8,6 @@ namespace AppointmentSystem.Repository.Interface.IRepository
         Task<List<AppointmentDTO>> GetAppointments(AppointmentFilterModel filter);
         Task<List<AppointmentDTO>> GetAllAppointments();
         Task<(bool IsDateAvailable, bool IsTimeAvailable)> CheckAvailability(DateOnly appointmentDate, TimeSpan appointmentTime);
+        Task<AppointmentDTO> GetAppointment(AppointmentFilterModel filter);
     }
 }

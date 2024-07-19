@@ -52,6 +52,11 @@ namespace AppointmentSystem.Business.Business
             }
         }
 
+        public async Task<List<UserNameAndIdDTO>> GetUsersNamesAndIds()
+        {
+            return await _userRepository.GetUsersNamesAndIds();
+        }
+
         public async Task<List<UserDTO>> UpdateUser(string tokenJWT, int idUser, UserUpdateModel updateUser)
         {
             var user = await _userRepository.GetById(idUser);
@@ -148,5 +153,7 @@ namespace AppointmentSystem.Business.Business
             return user;
 
         }
+
+        
     }
 }

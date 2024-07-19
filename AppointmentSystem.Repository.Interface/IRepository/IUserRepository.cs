@@ -10,5 +10,6 @@ namespace AppointmentSystem.Repository.Interface.IRepository
         Task<List<UserDTO>> GetUsers(UserFilterModel filter);
         Task<List<UserDTO>> GetAllUsers();
         Task<User> GetUser(UserFilter filter);
+        Task<List<UserNameAndIdDTO>> GetUsersNamesAndIds();
     }
 }

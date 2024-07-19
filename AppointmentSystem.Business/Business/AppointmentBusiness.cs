@@ -10,6 +10,7 @@ using AppointmentSystem.Utils.Messages;
 using log4net;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Policy;
 
 namespace AppointmentSystem.Business.Business
 {
@@ -64,18 +65,36 @@ namespace AppointmentSystem.Business.Business
             }
         }
 
+        public async Task<AppointmentDTO> GetAppointmentById(string tokenJWT, int idAppointment)
+        {
+            var appointment = await _appointmentRepository.GetById(idAppointment);
+            if(appointment == null)
+            {
+                _log.InfoFormat("O agendamento '{0}' não existe na base.", idAppointment);
+                throw new BusinessException(string.Format(BusinessMessages.AgendamentoNaoEncontrado, idAppointment));
+            }
+            await CheckUserOwnsAppointment(tokenJWT, appointment);
+            return await _appointmentRepository.GetAppointment(new AppointmentFilterModel { Id = idAppointment });
+        }
+
         public async Task<List<AppointmentDTO>> UpdateAppointmentByPatient(string tokenJWT, int idAppointment, AppointmentUpdatePatientModel updateAppointment)
         {
             var appointment = await _appointmentRepository.GetById(idAppointment);
             if (appointment != null)
             {
-                await CheckAppointmentAvailability(updateAppointment.AppointmentDate, updateAppointment.AppointmentTime);
+                await CheckUserOwnsAppointment(tokenJWT, appointment);
                 if (appointment.AppointmentDate != updateAppointment.AppointmentDate || appointment.AppointmentTime != updateAppointment.AppointmentTime)
                     await CheckAppointmentAvailability(updateAppointment.AppointmentDate, updateAppointment.AppointmentTime);
 
                 appointment.AppointmentDate = updateAppointment.AppointmentDate;
                 appointment.AppointmentTime = updateAppointment.AppointmentTime;
                 appointment.DateOfCreation = DateTime.Now;
+
+                //só é possivel alterar para cancelado
+                if (updateAppointment.Status == StatusEnum.Cancelado)
+                {
+                    appointment.Status = StatusEnum.Cancelado;
+                }
                 await _appointmentRepository.Update(appointment);
                 _log.InfoFormat("O agendamento '{0}' foi atualizado", idAppointment);
             }
@@ -188,5 +207,7 @@ namespace AppointmentSystem.Business.Business
 
             return appointment;
         }
+
+        
     }
 }

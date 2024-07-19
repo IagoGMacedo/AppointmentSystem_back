@@ -7,7 +7,7 @@ namespace AppointmentSystem.Entity.DTO
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
+        public string UserName { get; set; }
         public DateOnly AppointmentDate { get; set; }
         public TimeSpan AppointmentTime { get; set; }
         public StatusEnum Status { get; set; }

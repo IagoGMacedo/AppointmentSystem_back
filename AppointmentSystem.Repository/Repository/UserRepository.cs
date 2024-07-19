@@ -24,6 +24,7 @@ namespace AppointmentSystem.Repository.Repository
                    Appointments = user.Appointments.Select(a => new AppointmentDTO
                    {
                        Id = a.Id,
+                       UserName = user.Name,
                        AppointmentDate = a.AppointmentDate,
                        AppointmentTime = a.AppointmentTime,
                        Status = a.Status,
@@ -91,6 +92,7 @@ namespace AppointmentSystem.Repository.Repository
                 Appointments = user.Appointments.Select(a => new AppointmentDTO
                 {
                     Id = a.Id,
+                    UserName = user.Name,
                     AppointmentDate = a.AppointmentDate,
                     AppointmentTime = a.AppointmentTime,
                     Status = a.Status,
@@ -99,6 +101,21 @@ namespace AppointmentSystem.Repository.Repository
             }).ToListAsync();
 
             return result;
+        }
+
+        public async Task<List<UserNameAndIdDTO>> GetUsersNamesAndIds()
+        {
+            var query = EntitySet
+               .Where(user => user.Profile == Entity.Enum.ProfileEnum.Patient)
+               .OrderBy(user => user.Name)
+               .Select(user => new UserNameAndIdDTO
+               {
+                   Id = user.Id,
+                   Name = user.Name
+
+               });
+
+            return await query.ToListAsync();
         }
     }
 }

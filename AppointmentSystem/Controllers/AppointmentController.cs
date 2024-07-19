@@ -28,6 +28,14 @@ namespace AppointmentSystem.Api.Controllers
             return await _appointmentBusiness.CreateAppointment(_tokenJWT, newAppointment);
         }
 
+        [HttpGet("GetAppointmentById")]
+        [Authorize]
+        public async Task<AppointmentDTO> GetAppointmentById(int id)
+        {
+            _tokenJWT = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            return await _appointmentBusiness.GetAppointmentById(_tokenJWT, id);
+        }
+
         [HttpGet("GetAllAppointments")]
         [Authorize(Roles = PermissionConstants.PROFESSIONAL)]
         public async Task<List<AppointmentDTO>> GetAllAppointments()
