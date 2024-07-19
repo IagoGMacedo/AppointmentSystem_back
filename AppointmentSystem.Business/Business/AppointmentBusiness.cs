@@ -50,14 +50,14 @@ namespace AppointmentSystem.Business.Business
             var appointment = BuildAppointment(newAppointment, user);
             await _appointmentRepository.Create(appointment);
             _log.InfoFormat("O novo Agendamento {0} {1} foi inserido.", appointment.AppointmentDate, appointment.AppointmentTime);
-            return await _appointmentRepository.GetAllAppointments();
+            return await _appointmentRepository.GetAppointments(null);
         }
 
         public async Task<List<AppointmentDTO>> GetAppointments(AppointmentFilterModel filter)
         {
             if (filter == null)
             {
-                return await _appointmentRepository.GetAllAppointments();
+                return await _appointmentRepository.GetAppointments(null);
             }
             else
             {
@@ -74,7 +74,7 @@ namespace AppointmentSystem.Business.Business
                 throw new BusinessException(string.Format(BusinessMessages.AgendamentoNaoEncontrado, idAppointment));
             }
             await CheckUserOwnsAppointment(tokenJWT, appointment);
-            return await _appointmentRepository.GetAppointment(new AppointmentFilterModel { Id = idAppointment });
+            return await _appointmentRepository.GetAppointment(new AppointmentFilterModel { Id=idAppointment});
         }
 
         public async Task<List<AppointmentDTO>> UpdateAppointmentByPatient(string tokenJWT, int idAppointment, AppointmentUpdatePatientModel updateAppointment)
@@ -103,7 +103,7 @@ namespace AppointmentSystem.Business.Business
                 _log.InfoFormat("O agendamento '{0}' não existe na base.", idAppointment);
                 throw new BusinessException(string.Format(BusinessMessages.AgendamentoNaoEncontrado, idAppointment));
             }
-            return await _appointmentRepository.GetAllAppointments();
+            return await _appointmentRepository.GetAppointments(null);
         }
 
         public async Task<List<AppointmentDTO>> UpdateAppointmentByProfessional(int idAppointment, AppointmentUpdateProfessionalModel updateAppointment)
@@ -132,7 +132,7 @@ namespace AppointmentSystem.Business.Business
                 _log.InfoFormat("O agendamento '{0}' não existe na base.", idAppointment);
                 throw new BusinessException(string.Format(BusinessMessages.AgendamentoNaoEncontrado, idAppointment));
             }
-            return await _appointmentRepository.GetAllAppointments();
+            return await _appointmentRepository.GetAppointments(null);
         }
 
         public async Task<List<AppointmentDTO>> DeleteAppointment(string tokenJWT, int idAppointment)
@@ -149,7 +149,7 @@ namespace AppointmentSystem.Business.Business
                 _log.InfoFormat("O agendamento '{0}' não existe na base.", idAppointment);
                 throw new BusinessException(string.Format(BusinessMessages.AgendamentoNaoEncontrado, idAppointment));
             }
-            return await _appointmentRepository.GetAllAppointments();
+            return await _appointmentRepository.GetAppointments(null);
         }
 
         // verifica se, caso seja um paciente, ele está criando, alterando ou excluindo um agendamento que pertence a ele

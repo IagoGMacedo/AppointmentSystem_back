@@ -32,114 +32,59 @@ namespace AppointmentSystem.Repository.Repository
             return (isDateAvailable, isTimeAvailable);
         }
 
-        public async Task<List<AppointmentDTO>> GetAllAppointments()
-        {
-            var query = _context.Appointments
-                        .OrderBy(appointment => appointment.AppointmentDate)
-                        .ThenBy(appointment => appointment.AppointmentTime)
-                        .Select(appointment => new AppointmentDTO
-                        {
-                            Id = appointment.Id,
-                            UserId = appointment.UserId,
-                            UserName = appointment.User.Name,
-                            AppointmentDate = appointment.AppointmentDate,
-                            AppointmentTime = appointment.AppointmentTime,
-                            Status = appointment.Status,
-                            DateOfCreation = appointment.DateOfCreation
-                        });
-
-            return await query.ToListAsync();
-
-        }
-
-        public async Task<AppointmentDTO> GetAppointment(AppointmentFilterModel filter)
+        public async Task<List<AppointmentDTO>> GetAppointments(AppointmentFilterModel filter = null)
         {
             var query = _context.Appointments.AsQueryable();
 
-            if (filter.Id != null)
+            if (filter != null)
             {
-                query = query.Where(a => a.Id == filter.Id);
-            }
+                if (filter.Id != null)
+                {
+                    query = query.Where(a => a.Id == filter.Id);
+                }
 
-            if (filter.UserId != null)
-            {
-                query = query.Where(a => a.UserId == filter.UserId);
-            }
+                if (filter.UserId != null)
+                {
+                    query = query.Where(a => a.UserId == filter.UserId);
+                }
 
-            if (filter.AppointmentDate != null)
-            {
-                query = query.Where(a => a.AppointmentDate == filter.AppointmentDate);
-            }
+                if (filter.AppointmentDate != null)
+                {
+                    query = query.Where(a => a.AppointmentDate == filter.AppointmentDate);
+                }
 
-            if (filter.AppointmentTime != null)
-            {
-                query = query.Where(a => a.AppointmentTime == filter.AppointmentTime);
-            }
+                if (filter.AppointmentTime != null)
+                {
+                    query = query.Where(a => a.AppointmentTime == filter.AppointmentTime);
+                }
 
-            if (filter.Status != null)
-            {
-                query = query.Where(a => a.Status == filter.Status);
-            }
-
-            var result = await query.Select(appointment => new AppointmentDTO
-            {
-                Id = appointment.Id,
-                UserId = appointment.UserId,
-                UserName = appointment.User.Name,
-                AppointmentDate = appointment.AppointmentDate,
-                AppointmentTime = appointment.AppointmentTime,
-                Status = appointment.Status,
-                DateOfCreation = appointment.DateOfCreation
-            }).FirstOrDefaultAsync();
-
-            return result;
-        }
-
-        public async Task<List<AppointmentDTO>> GetAppointments(AppointmentFilterModel filter)
-        {
-            var query = _context.Appointments.AsQueryable();
-
-            if (filter.Id != null)
-            {
-                query = query.Where(a => a.Id == filter.Id);
-            }
-
-            if (filter.UserId != null)
-            {
-                query = query.Where(a => a.UserId == filter.UserId);
-            }
-
-            if (filter.AppointmentDate != null)
-            {
-                query = query.Where(a => a.AppointmentDate == filter.AppointmentDate);
-            }
-
-            if (filter.AppointmentTime != null)
-            {
-                query = query.Where(a => a.AppointmentTime == filter.AppointmentTime);
-            }
-
-            if (filter.Status != null)
-            {
-                query = query.Where(a => a.Status == filter.Status);
+                if (filter.Status != null)
+                {
+                    query = query.Where(a => a.Status == filter.Status);
+                }
             }
 
             var result = await query.OrderBy(appointment => appointment.AppointmentDate)
                 .ThenBy(appointment => appointment.AppointmentTime)
                 .Select(appointment => new AppointmentDTO
-            {
-                Id = appointment.Id,
-                UserId = appointment.UserId,
-                UserName = appointment.User.Name,
-                AppointmentDate = appointment.AppointmentDate,
-                AppointmentTime = appointment.AppointmentTime,
-                Status = appointment.Status,
-                DateOfCreation = appointment.DateOfCreation
-            }).ToListAsync();
-
+                {
+                    Id = appointment.Id,
+                    UserId = appointment.UserId,
+                    UserName = appointment.User.Name,
+                    AppointmentDate = appointment.AppointmentDate,
+                    AppointmentTime = appointment.AppointmentTime,
+                    Status = appointment.Status,
+                    DateOfCreation = appointment.DateOfCreation
+                }).ToListAsync();
 
             return result;
+        }
 
+        public async Task<AppointmentDTO> GetAppointment(AppointmentFilterModel filter)
+        {
+            var resultList = await GetAppointments(filter);
+
+            return resultList.FirstOrDefault();
         }
     }
 }

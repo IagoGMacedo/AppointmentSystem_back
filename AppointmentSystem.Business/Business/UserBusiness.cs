@@ -37,14 +37,14 @@ namespace AppointmentSystem.Business.Business
             user = BuildUser(newUser);
             await _userRepository.Create(user);
             _log.InfoFormat("O novo Usuário '{0}' foi inserido.", user.Name);
-            return await _userRepository.GetAllUsers();
+            return await _userRepository.GetUsers(null);
         }
 
         public async Task<List<UserDTO>> GetUsers(UserFilterModel filter)
         {
             if (filter == null)
             {
-                return await _userRepository.GetAllUsers();
+                return await _userRepository.GetUsers(null);
             }
             else
             {
@@ -80,7 +80,7 @@ namespace AppointmentSystem.Business.Business
                 _log.InfoFormat("O usuário '{0}' não existe na base.", idUser);
                 throw new BusinessException(string.Format(BusinessMessages.UsuarioNaoEncontrado, idUser));
             }
-            return await _userRepository.GetAllUsers();
+            return await _userRepository.GetUsers(null);
         }
 
         public async Task<List<UserDTO>> DeleteUser(string tokenJWT, int idUser)
@@ -102,7 +102,7 @@ namespace AppointmentSystem.Business.Business
                 _log.InfoFormat("O usuário '{0}' não existe na base.", idUser);
                 throw new BusinessException(string.Format(BusinessMessages.UsuarioNaoEncontrado, idUser));
             }
-            return await _userRepository.GetAllUsers();
+            return await _userRepository.GetUsers(null);
         }
 
         private async Task CheckUserOwnsAccount(string tokenJWT, User user)
